@@ -60,8 +60,8 @@ AnimatedCircularProgress.propTypes = {
   fill: PropTypes.number,
   prefill: PropTypes.number,
   width: PropTypes.number.isRequired,
-  tintColor: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
-  backgroundColor: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+  tintColor: PropTypes.string,
+  backgroundColor: PropTypes.string,
   tension: PropTypes.number,
   friction: PropTypes.number
 }
