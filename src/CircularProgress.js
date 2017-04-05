@@ -117,7 +117,7 @@ CircularProgress.propTypes = {
   rotation: PropTypes.number,
   linecap: PropTypes.string,
   children: PropTypes.func,
-  withSmallCircle: PropTypes.string,
+  withSmallCircle: PropTypes.bool,
   smallCircleTextStyle: View.propTypes.style
 }
 
