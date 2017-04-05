@@ -12,10 +12,10 @@ export default class CircularProgress extends React.Component {
       p.path.push(0, cx + r, cy);
       p.path.push(4, cx, cy, r, startDegree * Math.PI / 180, endDegree * Math.PI / 180, 1);
     } else {
-      // For Android we have to resort to drawing low-level Path primitives, as ART does not support 
+      // For Android we have to resort to drawing low-level Path primitives, as ART does not support
       // arbitrary circle segments. It also does not support strokeDash.
       // Furthermore, the ART implementation seems to be buggy/different than the iOS one.
-      // MoveTo is not needed on Android 
+      // MoveTo is not needed on Android
       p.path.push(4, cx, cy, r, startDegree * Math.PI / 180, (startDegree - endDegree) * Math.PI / 180, 0);
     }
     return p;
@@ -58,17 +58,21 @@ export default class CircularProgress extends React.Component {
     const circlePath = this.circlePath(size / 2, size / 2, size / 2 - width / 2, 0, 360 * fill / 100);
 
     const scpWidth = 50;
-    const smallCirclePath = this.circleFillPath((size / 2) - (scpWidth/4), (size / 2) - (scpWidth/4) , scpWidth / 2, size / 2 - width / 2, (360 * fill / 100) - rotation - 90);
+    const scpWidthWithBorder = 60;
+    const _delta = scpWidthWithBorder - scpWidth;
 
-    const { x, y } = this.calcXYPosition((size / 2) - (scpWidth/4), (size / 2) - (scpWidth/4) , scpWidth / 2, size / 2 - width / 2, (360 * fill / 100) - rotation - 90);
+    const smallCirclePath = this.circleFillPath((size / 2) - (scpWidth/4) + (_delta/2), (size / 2) - (scpWidth/4) + (_delta/2), scpWidth / 2, size / 2 - width / 2, (360 * fill / 100) - rotation - 90);
+    const smallCirclePathBorder = this.circleFillPath((size / 2) - (scpWidthWithBorder/4) + (_delta/2), (size / 2) - (scpWidthWithBorder/4) + (_delta/2), scpWidthWithBorder / 2, size / 2 - width / 2, (360 * fill / 100) - rotation - 90);
+
+    const { x, y } = this.calcXYPosition((size / 2) - (scpWidthWithBorder/4) + _delta, (size / 2) - (scpWidthWithBorder/4) + _delta , scpWidth / 2, size / 2 - width / 2, (360 * fill / 100) - rotation - 90);
 
     return (
       <View style={style}>
         <Surface
-          width={size+(scpWidth/2)+width}
-          height={size+(scpWidth/2)+width}>
+          width={size+(scpWidthWithBorder/2)+_delta+width}
+          height={size+(scpWidthWithBorder/2)+_delta+width}>
 
-          <Group rotation={rotation-90} x={scpWidth/4+(width/2)} y={scpWidth/4+(width/2)} originX={size/2} originY={size/2}>
+          <Group rotation={rotation-90} x={scpWidthWithBorder/4+_delta/2+(width/2)} y={scpWidthWithBorder/4+_delta/2+(width/2)} originX={size/2} originY={size/2}>
             <Shape d={backgroundPath}
                    stroke={backgroundColor}
                    opacity={0.1}
@@ -80,7 +84,10 @@ export default class CircularProgress extends React.Component {
           </Group>
           {
             withSmallCircle && (
-              <Shape fill={backgroundColor} d={smallCirclePath} x={scpWidth/2+(width/2)} y ={scpWidth/2+(width/2)} />
+              <Group>
+                <Shape x={(scpWidth+(_delta/2))/2+(width/2)} y={(scpWidth+(_delta/2))/2+(width/2)} fill={backgroundColor} d={smallCirclePath} />
+                <Shape x={scpWidthWithBorder/2+(width/2)} y={scpWidthWithBorder/2+(width/2)} fill={backgroundColor} opacity={0.1} d={smallCirclePathBorder} />
+              </Group>
             )
           }
         </Surface>
@@ -91,7 +98,7 @@ export default class CircularProgress extends React.Component {
           withSmallCircle && (
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', position: 'absolute', top: y + (width/2), left: x + (width/2), width: scpWidth, height: scpWidth, textAlign: 'center', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={[{color: tintColor, fontSize: 16}, smallCircleTextStyle]}>{Math.round(fill)}</Text>
-              <Text style={{color: tintColor, fontSize: 10, marginTop: -3, marginLeft: 1}}>%</Text>
+              <Text style={{color: tintColor, fontSize: 10, marginTop: -7, marginLeft: 1}}>%</Text>
             </View>
           )
         }
@@ -110,8 +117,8 @@ CircularProgress.propTypes = {
   rotation: PropTypes.number,
   linecap: PropTypes.string,
   children: PropTypes.func,
-  withSmallCircle: PropTypes.bool,
-  smallCircleTextStyle: View.propTypes.style
+  withSmallCircle: PropTypes.string,
+  smallCircleTextStyle: View.propTypes.string
 }
 
 CircularProgress.defaultProps = {
