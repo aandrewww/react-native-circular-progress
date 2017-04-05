@@ -96,7 +96,7 @@ export default class CircularProgress extends React.Component {
         }
         {
           withSmallCircle && (
-            <View style={{flexDirection: 'row', backgroundColor: 'transparent', position: 'absolute', top: y + (width/2), left: x + (width/2), width: scpWidth, height: scpWidth, textAlign: 'center', alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{flexDirection: 'row', backgroundColor: 'transparent', position: 'absolute', top: y + (width/2), left: x + (width/2), width: scpWidth, height: scpWidth, alignItems: 'center', justifyContent: 'center'}}>
               <Text style={[{color: tintColor, fontSize: 16}, smallCircleTextStyle]}>{Math.round(fill)}</Text>
               <Text style={{color: tintColor, fontSize: 10, marginTop: -7, marginLeft: 1}}>%</Text>
             </View>
