@@ -118,7 +118,7 @@ CircularProgress.propTypes = {
   linecap: PropTypes.string,
   children: PropTypes.func,
   withSmallCircle: PropTypes.bool,
-  smallCircleTextStyle: View.propTypes.style
+  smallCircleTextStyle: PropTypes.object
 }
 
 CircularProgress.defaultProps = {
